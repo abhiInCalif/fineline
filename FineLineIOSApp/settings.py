@@ -68,7 +68,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] =  dj_database_url.config()
+DATABASES['default'] =  dj_database_url.parse("mysql://b68bc60bf51344:6b30b057@us-cdbr-iron-east-01.cleardb.net/heroku_59892ff05168b27?reconnect=true")
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
