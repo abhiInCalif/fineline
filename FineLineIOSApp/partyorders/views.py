@@ -1,8 +1,10 @@
 from django.shortcuts import render
+from django.core.urlresolvers import reverse
 from django.views.generic import View
 from django.http import HttpResponse
 
 # Create your views here.
+from django.views.generic import CreateView
 from django.core import serializers
 from FineLineIOSApp.partyorders.models import ShoppingItem
 from FineLineIOSApp.partyorders.models import Delivery
@@ -57,4 +59,13 @@ class PlaceOrderView(View):
             return HttpResponse(data, mimetype='application/json')
         
         return HttpResponse('', mimetype='application/json')
-                
+
+class AddItemView(CreateView):
+    """
+    Adds an item to the catalogue
+    """
+    model = ShoppingItem
+    template_name = 'addItem.html'
+
+    def get_success_url(self):
+        return reverse('catalogue-view')
