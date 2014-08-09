@@ -11,7 +11,7 @@ class ShoppingItem(models.Model):
     name = models.CharField(max_length=128)
     sku = models.CharField(max_length=255, unique=True)
     price = models.IntegerField()
-    photo = models.FileField(upload_to='files/')
+    photo = models.URLField(max_length=512)
     
 class Delivery(models.Model):
     """
