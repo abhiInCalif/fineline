@@ -11,4 +11,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api-orders/', include("FineLineIOSApp.partyorders.urls")),
+    url(r'^api-payments/', include('FineLineIOSApp.payment.urls')),
 )

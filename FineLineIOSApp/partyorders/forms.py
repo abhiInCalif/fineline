@@ -7,4 +7,5 @@ class OrderForm(forms.Form):
     address = forms.CharField(required=True)
     name = forms.CharField(required=True)
     datetime = forms.CharField(required=True)
+    payment_nonce = forms.CharField(required=True)
     

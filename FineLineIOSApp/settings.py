@@ -14,6 +14,15 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
+# Braintree settings go here
+import braintree
+braintree.Configuration.configure(braintree.Environment.Sandbox,
+                                    merchant_id='qwy245r24sttxftk',
+                                    public_key='wx9h8st6d2vyb7nz',
+                                    private_key='4bbfb9b4be77ff456b287cf467d9fd1f')
+
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
