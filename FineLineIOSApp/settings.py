@@ -46,6 +46,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'FineLineIOSApp.partyorders',
+    'FineLineIOSApp.payment',
+    'FineLineIOSApp.company_website',
     'south',
 )
 
