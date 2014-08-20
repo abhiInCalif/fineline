@@ -1,3 +1,6 @@
 from django.shortcuts import render
 
-# Create your views here.
+class bouncingBots(View):
+    def get(self, request,*args,**kwargs):
+        render(request, "bouncingBots.html")
+ 
