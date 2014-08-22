@@ -3,6 +3,8 @@ from django.core.urlresolvers import reverse
 from django.views.generic import View
 from django.http import HttpResponse
 from django.core import serializers
+import json as simplejson
+
 
 # Create your views here.
 from django.views.generic import CreateView
@@ -10,6 +12,7 @@ from FineLineIOSApp.partyorders.models import ShoppingItem
 from FineLineIOSApp.partyorders.models import Delivery
 from FineLineIOSApp.partyorders.models import Order
 from FineLineIOSApp.partyorders.models import OrderItem
+from FineLineIOSApp.partyorders.forms import OrderForm
 from FineLineIOSApp.payment.views import BraintreePayment
 
 
@@ -45,6 +48,7 @@ class PlaceOrderView(View):
     This view supports placing an order
     """
     def post(self, request, *args, **kwargs):
+        import pdb; pdb.set_trace()
         form = OrderForm(request.POST)
         if form.is_valid():
             nonce = form.cleaned_data.get('payment_nonce')
@@ -58,9 +62,11 @@ class PlaceOrderView(View):
             order = Order(personName=name, delivery=delivery)
             order.save()
 
-            for (sku, quantity) in sku_list:
+            for i in range(0, len(sku_list),2):
+                sku = sku_list[i]
+                quantity = sku_list[i + 1]
                 items = ShoppingItem.objects.filter(sku=sku)
-                if items.length == 0:
+                if len(items) == 0:
                     return HttpResponse("500");
 
                 item = items[0]

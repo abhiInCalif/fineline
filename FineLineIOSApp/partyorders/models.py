@@ -33,6 +33,6 @@ class OrderItem(models.Model):
     OrderItem is an item ordered by someone
     It belongs to one and only one order
     """
-    item = models.OneToOneField(ShoppingItem)
+    item = models.ForeignKey(ShoppingItem)
     quantity = models.IntegerField()
     order = models.ForeignKey(Order)
