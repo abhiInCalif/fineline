@@ -34,7 +34,6 @@ class BraintreePayment(Payments, View):
     processing system
     """
     def get(self, request, *args, **kwargs):
-        import pdb; pdb.set_trace()
         client_token = braintree.ClientToken.generate()
         token_dict = {'token': client_token}
         jsonData = json.dumps(token_dict)
