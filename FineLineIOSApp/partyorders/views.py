@@ -48,7 +48,6 @@ class PlaceOrderView(View):
     This view supports placing an order
     """
     def post(self, request, *args, **kwargs):
-        import pdb; pdb.set_trace()
         form = OrderForm(request.POST)
         if form.is_valid():
             nonce = form.cleaned_data.get('payment_nonce')
