@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import View
 from django.http import HttpResponse
 from django.core import serializers
+import json
 
 # Custom imports here
 import braintree
@@ -33,10 +34,11 @@ class BraintreePayment(Payments, View):
     processing system
     """
     def get(self, request, *args, **kwargs):
+        import pdb; pdb.set_trace()
         client_token = braintree.ClientToken.generate()
         token_dict = {'token': client_token}
-        json = serializers.serialize('json', [token_dict])
-        return HttpResponse(json, mimetype='application/json')
+        jsonData = json.dumps(token_dict)
+        return HttpResponse(jsonData, mimetype='application/json')
 
     def perform_transaction(self, amount, nonce):
         """

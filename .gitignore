@@ -3,3 +3,7 @@ files/*
 bin/*
 lib/*
 include/*
+y
+y.*
+.Python
+.DS_Store
