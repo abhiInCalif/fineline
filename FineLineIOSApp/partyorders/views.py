@@ -22,7 +22,7 @@ def calculate_order_total(order):
     items = order.orderitem_set.all()
     price = 0
     for item in items:
-        price = price + item.item.price
+        price = price + item.quantity * item.item.price
 
     return price
 
