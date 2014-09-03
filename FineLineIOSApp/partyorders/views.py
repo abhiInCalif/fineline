@@ -92,7 +92,6 @@ class PlaceOrderView(View):
                     return HttpResponse("500");
 
                 item = items[0]
-                import pdb; pdb.set_trace()
                 if not check_inStock(item, quantity):
                     order.delete()
                     data = simplejson.dumps({
