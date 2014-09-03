@@ -35,6 +35,7 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 
+ADMINS = (('Abhi', 'abhi1994@gmail.com'))
 
 # Application definition
 
