@@ -44,7 +44,7 @@ class BraintreePayment(Payments, View):
         overwriting the super class definition here
         """
         result = braintree.Transaction.sale({
-            'amount': amount,
+            'amount': str(amount),
             'payment_method_nonce': nonce
         })
 

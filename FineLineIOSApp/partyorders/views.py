@@ -4,6 +4,7 @@ from django.views.generic import View
 from django.http import HttpResponse
 from django.core import serializers
 import json as simplejson
+from threading import RLock
 
 
 # Create your views here.
@@ -25,6 +26,28 @@ def calculate_order_total(order):
         price = price + item.quantity * item.item.price
 
     return price
+
+def check_inStock(item, quantity):
+    """
+    Checks if an item is in stock in a atomic fashion
+    """
+    # Update the stock amount, if the stock left is 0 return -1
+    inStock = True
+    lock = RLock()
+    lock.acquire()
+    try:
+        if item.stock - int(quantity) >= 0:
+            item.stock = item.stock - int(quantity)
+            item.save()
+        else:
+            # we have a problem, the stock is not there, time to
+            # cleanup and return -1
+            inStock = False
+    finally:
+        lock.release()
+
+    return inStock
+
 
 # purpose of class is to provide an endpoint for getting all shopping items
 # mobile endpoint only though.
@@ -69,6 +92,15 @@ class PlaceOrderView(View):
                     return HttpResponse("500");
 
                 item = items[0]
+                import pdb; pdb.set_trace()
+                if not check_inStock(item, quantity):
+                    order.delete()
+                    data = simplejson.dumps({
+                                             'stock': item.stock,
+                                             'item': item.name
+                                            })
+                    return HttpResponse(data, mimetype='application/json')
+
                 order_item = OrderItem(item=item, quantity=quantity, order=order)
                 order_item.save()
 
@@ -96,3 +128,4 @@ class AddItemView(CreateView):
 
     def get_success_url(self):
         return reverse('catalogue-view')
+

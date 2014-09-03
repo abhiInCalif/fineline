@@ -10,8 +10,9 @@ class ShoppingItem(models.Model):
     """
     name = models.CharField(max_length=128)
     sku = models.CharField(max_length=255, unique=True)
-    price = models.IntegerField()
+    price = models.FloatField()
     photo = models.URLField(max_length=512)
+    stock = models.IntegerField()
     
 class Delivery(models.Model):
     """
