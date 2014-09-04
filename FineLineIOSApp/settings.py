@@ -16,10 +16,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Braintree settings go here
 import braintree
-braintree.Configuration.configure(braintree.Environment.Sandbox,
-                                    merchant_id='qwy245r24sttxftk',
-                                    public_key='wx9h8st6d2vyb7nz',
-                                    private_key='4bbfb9b4be77ff456b287cf467d9fd1f')
+braintree.Configuration.configure(braintree.Environment.Production,
+                                    merchant_id='4vz5fbwrk2kzfsh7',
+                                    public_key='6wnhxwkp5cq5sjyb',
+                                    private_key='421a95c0a49288cca17a6437409c37b9')
 
 
 
