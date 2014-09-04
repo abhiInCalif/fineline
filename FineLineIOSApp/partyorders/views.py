@@ -110,6 +110,12 @@ class PlaceOrderView(View):
             result = payment_handler.perform_transaction(order_total, nonce)
             if result.is_success is not True:
                 # erase the order
+                # for every item in the order, add the stock items back in
+                for item in order.orderitem_set.all():
+                    shopping_item = item.item
+                    shopping_item.stock = shopping_item.stock + item.quantity
+                    shopping_item.save()
+
                 order.delete()
                 return HttpResponse('', mimetype='application/json')
 
