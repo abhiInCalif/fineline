@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'FineLineIOSApp.partyorders',
     'FineLineIOSApp.payment',
     'FineLineIOSApp.company_website',
+    'FineLineIOSApp.webversion',
     'south',
 )
 

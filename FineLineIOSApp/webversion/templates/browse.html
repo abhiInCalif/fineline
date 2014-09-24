@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" ng-app="fineline">
+<head>
+  <meta charset="utf-8">
+  <title>My HTML File</title>
+  <link rel="stylesheet" href="https://s3.amazonaws.com/onelinedesign/bootstrap/css/bootstrap.css">
+  <script src="https://s3.amazonaws.com/onelinedesign/jquery/jquery.min.js"></script>
+  <script src="https://s3.amazonaws.com/onelinedesign/angular/angular.js"></script>
+  <script src="https://s3.amazonaws.com/onelinedesign/fineline/js/controllers.js"></script>
+  <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+  <script>
+  var globalItems = [
+  {% for item in items %}
+  {% verbatim %} { {% endverbatim %}
+  "name": "{{ item.name }}",
+  "sku": "{{ item.sku }}",
+  "price": "{{ item.price }}",
+  "photo": "{{ item.photo }}",
+  "stock": {{ item.stock }},
+  "count": 0,
+  {% verbatim %} }, {% endverbatim %}
+  {% endfor %}
+  ];
+  </script>
+</head>
+<body>
+  <!-- We want a section that can list all the items -->
+  <div style="margin: 40px 20px 40px 20px;" ng-controller="browseItemController">
+    {% verbatim %}
+    <div style="width: 400px; height: 400px; float: left; position: relative;" ng-repeat="item in items" ng-show="purchaseState == 0 || purchaseState == 1">
+      <div style="float: left;">
+        <img src="{{ item.photo }}" style="height: 250px; width: 225px;" />
+      </div>
+      <div>
+        <h4>{{ item.name }}</h4>
+        <span style="font-size: 16px;"><b>Cost:</b> ${{ item.price }}</span><br />
+        <span style="font-size: 16px;"><b>Count:</b> {{ item.count || 0 }}</span><br />
+        <input type="hidden" value="{{ item.sku }}" />
+      </div>
+      <div style="position: absolute; bottom: 200px; right: 0px;">
+        <button type="button" class="btn btn-default btn-lg" ng-click="addToCart(item)" ng-disabled="buttonsActive">Add</button>
+        <button type="button" class="btn btn-default btn-lg" ng-click="removeFromCart(item)" ng-disabled="buttonsActive">Remove</button>
+      </div>
+    </div>
+    <div style="width: 400px; height: 400px; float: left; margin-left: 50px; margin-top: -50px;" ng-show="purchaseState == 0">
+      <div class="jumbotron">
+        <div class="container">
+          <h4>Ready to order?</h4>
+          <p style="margin-bottom: 27px;">If you are ready to order, and have all the items you need, go ahead and place your order.</p>
+          <p><a class="btn btn-success btn-lg" role="button" ng-click="nextPaymentStep()">Place my order!</a></p>
+        </div>
+      </div>
+    </div>
+      
+    <!-- The jumbotron for confirm your order -->
+    <div style="width: 400px; height: 400px; float: left; margin-left: 50px; margin-top: -50px;" ng-show="purchaseState == 1">
+      <div class="jumbotron">
+        <div class="container">
+          <h4>Confirm your Order</h4>
+          <p style="margin-bottom: 27px;">
+            Your total cost is: ${{ orderCost }}. <br />
+            The items shown on this page are the ones you selected. Is this what you wanted?
+          </p>
+          <p>
+            <a class="btn btn-success btn-lg" role="button" ng-click="nextPaymentStep()">Confirm Order!</a>
+            <a class="btn btn-danger btn-lg" role="button" ng-click="previousPaymentStep()">Back!</a>
+          </p>
+        </div>
+      </div>
+    </div>
+      <!-- The html for the delivery page step -->
+    <div ng-show="purchaseState == 2" style="font-size: 22px;">
+      <form role="form">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="email" class="form-control" id="name" style="height: 50px;" placeholder="Enter name">
+        </div>
+        <div class="form-group">
+          <label for="dormrm">Dorm Room Number</label>
+          <input type="email" class="form-control" id="dormrm" style="height: 50px;" placeholder="Enter dorm room number">
+        </div>
+        <div class="form-group">
+          <label for="bldg">Building Name</label>
+          <input type="email" class="form-control" id="bldg" style="height: 50px;" placeholder="Enter building name">
+        </div>
+        <div class="form-group">
+          <label for="time">Delivery Time</label>
+          <input type="email" class="form-control" id="time" style="height: 50px;" placeholder="Enter delivery time">
+        </div>
+        <div style="width: 400px; height: 400px; float: left;">
+          <div class="jumbotron">
+            <div class="container">
+              <h4>Add Delivery Information</h4>
+              <p style="margin-bottom: 27px;">
+                Please enter your delivery information, and confirm your order!
+              </p>
+              <p>
+                <a class="btn btn-success btn-lg" role="button" ng-click="nextPaymentStep()">Confirm</a>
+                <a class="btn btn-danger btn-lg" role="button" ng-click="previousPaymentStep()">Back!</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+<!-- Fill in payment form state -->
+    <div id="braintreeContainer" ng-show="purchaseState == 3">
+      <h2>Enter Payment Information</h2>
+      <form id="checkout" method="post">
+        <div id="dropin"></div>
+        <button type="submit" class="btn btn-info btn-lg" ng-click="submitOrder()">Purchase</button>
+        <a class="btn btn-danger btn-lg" role="button" ng-click="previousPaymentStep()">Back!</a>
+      </form>
+    </div>
+    
+<!-- Thank you screen! -->
+    <div ng-show="purchaseState == 4">
+      <h2>Thank you!</h2>
+      <h4>Your order is on its way! If it doesn't arrive by your party time, feel free to phone us at 650-776-1881!</h4>
+      <h4>We really appreciate your business!</h4>
+      <a class="btn btn-success btn-lg" role="button" ng-click="backToBeginning()">Start a new order</a>
+    </div>
+    {% endverbatim %}
+  </div>
+</body>
+</html>
